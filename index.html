@@ -22,6 +22,13 @@
       align-items: center;
       justify-content: center;
       padding: 16px;
+      opacity: 0;
+      animation: fadeInBody 0.5s ease forwards;
+    }
+
+    @keyframes fadeInBody {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
     }
 
     .glass-wrapper {
@@ -253,7 +260,7 @@
       transform: scale(0.94);
     }
 
-    /* Состояние после клика */
+    /* Состояние клика */
     .btn-clicked {
       opacity: 0.7;
       transform: scale(0.95);
@@ -444,8 +451,8 @@
       </div>
 
       <div class="button-group">
-        <a href="https://t.me/your_channel" target="_blank" class="btn btn-primary" id="btnBuy">Купить</a>
-        <a href="https://t.me/your_support" target="_blank" class="btn btn-secondary" id="btnWrite">Написать</a>
+        <a href="https://t.me/your_channel" target="_blank" class="btn btn-primary" id="btnBuy" onclick="handleClick('btnBuy', 'Купить')">Купить</a>
+        <a href="https://t.me/your_support" target="_blank" class="btn btn-secondary" id="btnWrite" onclick="handleClick('btnWrite', 'Написать')">Написать</a>
       </div>
 
       <div class="cards-grid">
@@ -469,99 +476,64 @@
   </div>
 
   <script>
-    // ===== ГЛАВНОЕ РЕШЕНИЕ: сохраняем состояние при возврате =====
+    // ===== РЕШЕНИЕ: сохраняем состояние через URL (hash) =====
     
-    // Функция для сохранения состояния клика
-    function markButtonClicked(buttonId) {
-      sessionStorage.setItem('clickedButton', buttonId);
-      sessionStorage.setItem('clickTime', Date.now().toString());
+    function handleClick(buttonId, originalText) {
+      // Сохраняем состояние в URL через hash
+      window.location.hash = 'clicked=' + buttonId + '&text=' + encodeURIComponent(originalText);
+      
+      // Меняем кнопку сразу
+      const btn = document.getElementById(buttonId);
+      if (btn) {
+        btn.classList.add('btn-clicked');
+        btn.textContent = '⏳ Открытие...';
+      }
+      
+      // Разрешаем переход
+      return true;
     }
 
-    // Функция для восстановления состояния при загрузке
-    function restoreButtonState() {
-      const clickedId = sessionStorage.getItem('clickedButton');
-      const clickTime = sessionStorage.getItem('clickTime');
-      
-      if (clickedId && clickTime) {
-        const timeDiff = Date.now() - parseInt(clickTime);
-        // Если прошло меньше 5 секунд - показываем состояние клика
-        if (timeDiff < 5000) {
-          const btn = document.getElementById(clickedId);
+    // Проверяем hash при загрузке страницы
+    function checkHashState() {
+      const hash = window.location.hash;
+      if (hash && hash.includes('clicked=')) {
+        // Извлекаем ID кнопки из hash
+        const match = hash.match(/clicked=([^&]+)/);
+        const textMatch = hash.match(/text=([^&]+)/);
+        
+        if (match) {
+          const buttonId = match[1];
+          const originalText = textMatch ? decodeURIComponent(textMatch[1]) : '';
+          const btn = document.getElementById(buttonId);
+          
           if (btn) {
             btn.classList.add('btn-clicked');
-            const originalText = btn.textContent;
             btn.textContent = '⏳ Открытие...';
             
-            // Автоматически снимаем состояние через 5 секунд
+            // Через 5 секунд убираем состояние и очищаем hash
             setTimeout(() => {
               btn.classList.remove('btn-clicked');
-              btn.textContent = originalText;
-              sessionStorage.removeItem('clickedButton');
-              sessionStorage.removeItem('clickTime');
+              btn.textContent = originalText || (buttonId === 'btnBuy' ? 'Купить' : 'Написать');
+              // Убираем hash из URL без перезагрузки
+              history.pushState('', document.title, window.location.pathname + window.location.search);
             }, 5000);
           }
-        } else {
-          // Если прошло больше 5 секунд - очищаем
-          sessionStorage.removeItem('clickedButton');
-          sessionStorage.removeItem('clickTime');
         }
       }
     }
 
-    // Обработчик клика по кнопкам
-    document.querySelectorAll('.btn').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        // Сохраняем ID нажатой кнопки
-        markButtonClicked(this.id);
-        
-        // Добавляем визуальный эффект сразу
-        this.classList.add('btn-clicked');
-        const originalText = this.textContent;
-        this.textContent = '⏳ Открытие...';
-        
-        // Через 5 секунд снимаем состояние (если страница не перезагрузилась)
-        setTimeout(() => {
-          this.classList.remove('btn-clicked');
-          this.textContent = originalText;
-          sessionStorage.removeItem('clickedButton');
-          sessionStorage.removeItem('clickTime');
-        }, 5000);
-        
-        // Разрешаем переход по ссылке
-        return true;
-      });
-    });
-
-    // Восстанавливаем состояние при загрузке страницы
-    document.addEventListener('DOMContentLoaded', restoreButtonState);
-
-    // Восстанавливаем при возврате из кеша (Telegram)
+    // Запускаем проверку при загрузке
+    document.addEventListener('DOMContentLoaded', checkHashState);
+    
+    // Запускаем при возврате из кеша (Telegram)
     window.addEventListener('pageshow', function(event) {
-      if (event.persisted) {
-        // Страница загружена из кеша - восстанавливаем состояние
-        restoreButtonState();
-        
-        // Также сбрасываем все кнопки, которые могли остаться в "зависшем" состоянии
-        document.querySelectorAll('.btn').forEach(btn => {
-          if (btn.classList.contains('btn-clicked')) {
-            // Если кнопка в состоянии клика, но прошло больше 5 секунд
-            const clickTime = sessionStorage.getItem('clickTime');
-            if (clickTime && Date.now() - parseInt(clickTime) > 5000) {
-              btn.classList.remove('btn-clicked');
-              if (btn.id === 'btnBuy') btn.textContent = 'Купить';
-              else if (btn.id === 'btnWrite') btn.textContent = 'Написать';
-              sessionStorage.removeItem('clickedButton');
-              sessionStorage.removeItem('clickTime');
-            }
-          }
-        });
-      }
+      checkHashState();
     });
 
-    // Если вкладка стала видимой - проверяем состояние
+    // Если вкладка стала видимой
     document.addEventListener('visibilitychange', function() {
       if (!document.hidden) {
-        restoreButtonState();
+        checkHashState();
       }
     });
 
