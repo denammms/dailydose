@@ -196,7 +196,6 @@
       margin-bottom: 44px;
     }
 
-    /* ===== КНОПКИ КАК ССЫЛКИ С АНИМАЦИЯМИ ===== */
     .btn {
       padding: 14px 36px;
       border: none;
@@ -254,7 +253,13 @@
       transform: scale(0.94);
     }
 
-    /* карточки преимуществ */
+    /* Состояние после клика */
+    .btn-clicked {
+      opacity: 0.7;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -438,10 +443,9 @@
         <p>Сочные фуллы со всех дорогих приваток собраны в нашей випке, пополнение ежедневное.</p>
       </div>
 
-      <!-- КНОПКИ КАК ССЫЛКИ С СОХРАНЕНИЕМ АНИМАЦИЙ -->
       <div class="button-group">
-        <a href="https://t.me/dailydose_vip_bot" target="_blank" class="btn btn-primary">Купить</a>
-        <a href="https://t.me/Legendagggk" target="_blank" class="btn btn-secondary">Написать</a>
+        <a href="https://t.me/your_channel" target="_blank" class="btn btn-primary" id="btnBuy">Купить</a>
+        <a href="https://t.me/your_support" target="_blank" class="btn btn-secondary" id="btnWrite">Написать</a>
       </div>
 
       <div class="cards-grid">
@@ -465,6 +469,103 @@
   </div>
 
   <script>
+    // ===== ГЛАВНОЕ РЕШЕНИЕ: сохраняем состояние при возврате =====
+    
+    // Функция для сохранения состояния клика
+    function markButtonClicked(buttonId) {
+      sessionStorage.setItem('clickedButton', buttonId);
+      sessionStorage.setItem('clickTime', Date.now().toString());
+    }
+
+    // Функция для восстановления состояния при загрузке
+    function restoreButtonState() {
+      const clickedId = sessionStorage.getItem('clickedButton');
+      const clickTime = sessionStorage.getItem('clickTime');
+      
+      if (clickedId && clickTime) {
+        const timeDiff = Date.now() - parseInt(clickTime);
+        // Если прошло меньше 5 секунд - показываем состояние клика
+        if (timeDiff < 5000) {
+          const btn = document.getElementById(clickedId);
+          if (btn) {
+            btn.classList.add('btn-clicked');
+            const originalText = btn.textContent;
+            btn.textContent = '⏳ Открытие...';
+            
+            // Автоматически снимаем состояние через 5 секунд
+            setTimeout(() => {
+              btn.classList.remove('btn-clicked');
+              btn.textContent = originalText;
+              sessionStorage.removeItem('clickedButton');
+              sessionStorage.removeItem('clickTime');
+            }, 5000);
+          }
+        } else {
+          // Если прошло больше 5 секунд - очищаем
+          sessionStorage.removeItem('clickedButton');
+          sessionStorage.removeItem('clickTime');
+        }
+      }
+    }
+
+    // Обработчик клика по кнопкам
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        // Сохраняем ID нажатой кнопки
+        markButtonClicked(this.id);
+        
+        // Добавляем визуальный эффект сразу
+        this.classList.add('btn-clicked');
+        const originalText = this.textContent;
+        this.textContent = '⏳ Открытие...';
+        
+        // Через 5 секунд снимаем состояние (если страница не перезагрузилась)
+        setTimeout(() => {
+          this.classList.remove('btn-clicked');
+          this.textContent = originalText;
+          sessionStorage.removeItem('clickedButton');
+          sessionStorage.removeItem('clickTime');
+        }, 5000);
+        
+        // Разрешаем переход по ссылке
+        return true;
+      });
+    });
+
+    // Восстанавливаем состояние при загрузке страницы
+    document.addEventListener('DOMContentLoaded', restoreButtonState);
+
+    // Восстанавливаем при возврате из кеша (Telegram)
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) {
+        // Страница загружена из кеша - восстанавливаем состояние
+        restoreButtonState();
+        
+        // Также сбрасываем все кнопки, которые могли остаться в "зависшем" состоянии
+        document.querySelectorAll('.btn').forEach(btn => {
+          if (btn.classList.contains('btn-clicked')) {
+            // Если кнопка в состоянии клика, но прошло больше 5 секунд
+            const clickTime = sessionStorage.getItem('clickTime');
+            if (clickTime && Date.now() - parseInt(clickTime) > 5000) {
+              btn.classList.remove('btn-clicked');
+              if (btn.id === 'btnBuy') btn.textContent = 'Купить';
+              else if (btn.id === 'btnWrite') btn.textContent = 'Написать';
+              sessionStorage.removeItem('clickedButton');
+              sessionStorage.removeItem('clickTime');
+            }
+          }
+        });
+      }
+    });
+
+    // Если вкладка стала видимой - проверяем состояние
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
+        restoreButtonState();
+      }
+    });
+
+    // Частицы
     (function() {
       const container = document.getElementById('particleContainer');
       if (!container) return;
