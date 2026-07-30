@@ -261,7 +261,7 @@
     /* карточки преимуществ */
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
     }
 
@@ -297,10 +297,6 @@
     .glass-card:nth-child(3):hover {
       border-color: #00FF00;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(0, 255, 0, 0.15);
-    }
-    .glass-card:nth-child(4):hover {
-      border-color: #FF1493;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(255, 20, 147, 0.2);
     }
 
     .glass-card .icon {
@@ -359,9 +355,18 @@
         font-size: 0.9rem;
       }
 
+      /* 3 карточки: 2 сверху, 1 снизу по центру */
       .cards-grid {
         grid-template-columns: 1fr 1fr;
         gap: 14px;
+      }
+
+      /* третья карточка занимает две колонки и центрируется */
+      .glass-card:nth-child(3) {
+        grid-column: 1 / -1;
+        max-width: 280px;
+        margin: 0 auto;
+        width: 100%;
       }
 
       .glass-card {
@@ -391,9 +396,13 @@
 
     @media (max-width: 420px) {
       .cards-grid {
-        grid-template-columns: 1fr 1fr;
         gap: 10px;
       }
+
+      .glass-card:nth-child(3) {
+        max-width: 220px;
+      }
+
       .glass-card {
         padding: 14px 10px 12px;
       }
