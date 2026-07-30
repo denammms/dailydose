@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VIP лендинг · стекло & частицы</title>
-  <!-- шрифт для логотипа и текста -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
@@ -22,27 +21,26 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 16px;
     }
 
-    /* главный контейнер — стеклянный каркас, но фон прозрачный */
+    /* главный контейнер — стеклянный каркас */
     .glass-wrapper {
       max-width: 1200px;
       width: 100%;
-      background: rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border-radius: 56px;
-      padding: 40px 40px 50px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 40px;
+      padding: 32px 28px 40px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
       position: relative;
       z-index: 10;
       overflow: hidden;
-      transition: all 0.2s;
     }
 
-    /* фон с размытыми кругами и частицами – вынесен за wrapper */
+    /* фон с размытыми кругами и частицами */
     .bg-canvas {
       position: fixed;
       top: 0;
@@ -59,7 +57,7 @@
       position: absolute;
       border-radius: 50%;
       filter: blur(80px);
-      opacity: 0.6;
+      opacity: 0.5;
       will-change: transform;
     }
 
@@ -87,7 +85,7 @@
       background: #00FF00;
       top: 40%;
       right: -50px;
-      opacity: 0.3;
+      opacity: 0.25;
       animation: floatCircle 25s infinite alternate ease-in-out;
     }
 
@@ -97,7 +95,7 @@
       background: #FF1493;
       bottom: 20%;
       left: -80px;
-      opacity: 0.25;
+      opacity: 0.2;
       animation: floatCircle 20s infinite alternate-reverse ease-in-out;
     }
 
@@ -108,7 +106,7 @@
       100% { transform: translate(20px, -20px) scale(1.05); }
     }
 
-    /* частицы (светящиеся точки) */
+    /* частицы */
     .particle-container {
       position: fixed;
       top: 0;
@@ -126,15 +124,15 @@
       height: 6px;
       background: #ffffff;
       border-radius: 50%;
-      box-shadow: 0 0 20px 4px rgba(0, 255, 0, 0.5), 0 0 40px 8px rgba(255, 20, 147, 0.3);
-      opacity: 0.6;
+      box-shadow: 0 0 20px 4px rgba(0, 255, 0, 0.4), 0 0 40px 8px rgba(255, 20, 147, 0.2);
+      opacity: 0.5;
       animation: floatParticle linear infinite;
     }
 
     @keyframes floatParticle {
-      0% { transform: translateY(0) scale(0.8); opacity: 0.2; }
-      50% { opacity: 0.9; transform: translateY(-120px) scale(1.4); }
-      100% { transform: translateY(-260px) scale(0.6); opacity: 0.1; }
+      0% { transform: translateY(0) scale(0.8); opacity: 0.15; }
+      50% { opacity: 0.8; transform: translateY(-120px) scale(1.3); }
+      100% { transform: translateY(-260px) scale(0.5); opacity: 0.05; }
     }
 
     /* контент поверх фона */
@@ -144,95 +142,100 @@
       color: #fff;
     }
 
-    /* логотип (текстовый) */
+    /* логотип */
     .logo-area {
-      margin-bottom: 40px;
+      margin-bottom: 32px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .logo-text {
-      font-size: 2.4rem;
+      font-size: 2.2rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       background: linear-gradient(135deg, #00FF00 20%, #FF1493 80%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
-      display: inline-block;
+      text-shadow: 0 0 40px rgba(0, 255, 0, 0.15);
     }
 
     .logo-badge {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(4px);
-      padding: 6px 16px;
+      padding: 4px 14px;
       border-radius: 40px;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-weight: 600;
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: #ccc;
-      margin-left: 10px;
       letter-spacing: 0.4px;
     }
 
-    /* описание VIP */
+    /* описание VIP — добавлен тёмный подложка для читаемости */
     .vip-description {
-      margin-bottom: 40px;
+      margin-bottom: 32px;
       animation: fadeUp 0.9s ease forwards;
       opacity: 0;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      padding: 20px 24px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
     .vip-description h2 {
-      font-size: 2.8rem;
+      font-size: 2.4rem;
       font-weight: 700;
       background: linear-gradient(135deg, #fff 30%, #00FF00 70%, #FF1493);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       letter-spacing: -0.02em;
     }
 
     .vip-description p {
-      font-size: 1.15rem;
-      color: rgba(255, 255, 255, 0.75);
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.9);
       max-width: 580px;
       line-height: 1.6;
-      backdrop-filter: blur(2px);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     }
 
     /* кнопки */
     .button-group {
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 56px;
+      gap: 14px;
+      margin-bottom: 44px;
       animation: fadeUp 1s ease forwards;
       opacity: 0;
       animation-delay: 0.2s;
     }
 
     .btn {
-      padding: 14px 40px;
+      padding: 14px 36px;
       border: none;
       border-radius: 60px;
       font-weight: 600;
-      font-size: 1rem;
-      background: rgba(20, 20, 20, 0.5);
+      font-size: 0.95rem;
+      background: rgba(20, 20, 20, 0.6);
       backdrop-filter: blur(8px);
       color: #fff;
       cursor: pointer;
       border: 1px solid rgba(255, 255, 255, 0.06);
       transition: all 0.3s ease;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
       letter-spacing: 0.3px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 140px;
-      text-decoration: none;
+      min-width: 120px;
+      flex: 1 1 auto;
       position: relative;
       overflow: hidden;
     }
@@ -248,7 +251,7 @@
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       pointer-events: none;
-      opacity: 0.5;
+      opacity: 0.3;
       transition: opacity 0.3s;
     }
 
@@ -256,12 +259,12 @@
       background: #00FF00;
       color: #0a0a0a;
       border: 1px solid #00FF00;
-      box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+      box-shadow: 0 0 30px rgba(0, 255, 0, 0.15);
     }
 
     .btn-primary:hover {
       transform: scale(1.04) translateY(-3px);
-      box-shadow: 0 0 40px rgba(0, 255, 0, 0.4);
+      box-shadow: 0 0 50px rgba(0, 255, 0, 0.35);
       background: #66ff66;
       border-color: #66ff66;
     }
@@ -270,96 +273,98 @@
       background: #FF1493;
       color: #fff;
       border: 1px solid #FF1493;
-      box-shadow: 0 0 20px rgba(255, 20, 147, 0.2);
+      box-shadow: 0 0 30px rgba(255, 20, 147, 0.15);
     }
 
     .btn-secondary:hover {
       transform: scale(1.04) translateY(-3px);
-      box-shadow: 0 0 40px rgba(255, 20, 147, 0.4);
+      box-shadow: 0 0 50px rgba(255, 20, 147, 0.35);
       background: #ff4da6;
       border-color: #ff4da6;
     }
 
     .btn-outline {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: #fff;
     }
 
     .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.08);
       border-color: #00FF00;
-      box-shadow: 0 0 30px rgba(0, 255, 0, 0.15);
+      box-shadow: 0 0 40px rgba(0, 255, 0, 0.12);
       transform: scale(1.04) translateY(-3px);
     }
 
-    /* карточки преимуществ — стеклянный стиль */
+    .btn:active {
+      transform: scale(0.94);
+    }
+
+    /* карточки преимуществ */
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
       animation: fadeUp 1.2s ease forwards;
       opacity: 0;
       animation-delay: 0.4s;
     }
 
     .glass-card {
-      background: rgba(20, 20, 30, 0.25);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 32px;
-      padding: 28px 18px 24px;
+      background: rgba(10, 10, 20, 0.5);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 28px;
+      padding: 24px 16px 20px;
       border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
       transition: all 0.25s ease;
       text-align: center;
       color: #eee;
       transform: scale(1);
-      will-change: transform, box-shadow, border-color;
     }
 
     .glass-card:hover {
       transform: translateY(-8px) scale(1.02);
-      border-color: rgba(0, 255, 0, 0.4);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 255, 0, 0.1);
-      background: rgba(30, 30, 40, 0.35);
+      border-color: rgba(0, 255, 0, 0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 255, 0, 0.08);
+      background: rgba(25, 25, 40, 0.6);
     }
 
-    /* каждая карточка подсвечивается при наведении своим цветом */
     .glass-card:nth-child(1):hover {
       border-color: #00FF00;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 255, 0, 0.2);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(0, 255, 0, 0.15);
     }
     .glass-card:nth-child(2):hover {
       border-color: #FF1493;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 20, 147, 0.25);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(255, 20, 147, 0.2);
     }
     .glass-card:nth-child(3):hover {
       border-color: #00FF00;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 255, 0, 0.2);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(0, 255, 0, 0.15);
     }
     .glass-card:nth-child(4):hover {
       border-color: #FF1493;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 20, 147, 0.25);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(255, 20, 147, 0.2);
     }
 
     .glass-card .icon {
-      font-size: 2.4rem;
-      margin-bottom: 10px;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
       display: block;
     }
     .glass-card h3 {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       background: linear-gradient(135deg, #fff, #d0d0d0);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
     .glass-card p {
-      font-size: 0.9rem;
-      opacity: 0.7;
+      font-size: 0.85rem;
+      opacity: 0.75;
       line-height: 1.4;
     }
 
@@ -369,12 +374,93 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* адаптив */
-    @media (max-width: 700px) {
-      .glass-wrapper { padding: 28px 20px; }
-      .logo-text { font-size: 1.8rem; }
-      .vip-description h2 { font-size: 2rem; }
-      .button-group .btn { flex: 1 1 100%; }
+    /* адаптив для телефонов */
+    @media (max-width: 640px) {
+      .glass-wrapper {
+        padding: 20px 16px 28px;
+        border-radius: 28px;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+
+      .logo-text {
+        font-size: 1.8rem;
+      }
+
+      .vip-description {
+        padding: 16px 18px;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .vip-description h2 {
+        font-size: 1.8rem;
+      }
+
+      .vip-description p {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      .button-group .btn {
+        flex: 1 1 100%;
+        padding: 13px 20px;
+        font-size: 0.9rem;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .glass-card {
+        padding: 18px 12px 16px;
+        background: rgba(10, 10, 20, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      .glass-card .icon {
+        font-size: 1.8rem;
+      }
+      .glass-card h3 {
+        font-size: 1rem;
+      }
+      .glass-card p {
+        font-size: 0.78rem;
+      }
+
+      .circle-1 { width: 350px; height: 350px; top: -80px; left: -80px; }
+      .circle-2 { width: 300px; height: 300px; bottom: -60px; right: -60px; }
+      .circle-3 { width: 250px; height: 250px; }
+      .circle-4 { width: 200px; height: 200px; }
+    }
+
+    @media (max-width: 420px) {
+      .cards-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .glass-card {
+        padding: 14px 10px 12px;
+      }
+      .glass-card .icon {
+        font-size: 1.5rem;
+      }
+      .glass-card h3 {
+        font-size: 0.9rem;
+      }
+      .glass-card p {
+        font-size: 0.7rem;
+      }
+      .vip-description h2 {
+        font-size: 1.5rem;
+      }
+      .logo-text {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -387,32 +473,32 @@
     <div class="circle circle-4"></div>
   </div>
 
-  <!-- частицы (генерируем js) -->
+  <!-- частицы -->
   <div class="particle-container" id="particleContainer"></div>
 
-  <!-- основной контент в стеклянном враппере -->
+  <!-- основной контент -->
   <div class="glass-wrapper">
     <div class="content">
-      <!-- логотип (текстовый) -->
+      <!-- логотип -->
       <div class="logo-area">
         <span class="logo-text">✦ VIP</span>
         <span class="logo-badge">премиум</span>
       </div>
 
-      <!-- описание VIP -->
+      <!-- описание VIP с затемнённым фоном -->
       <div class="vip-description">
         <h2>Эксклюзивный доступ</h2>
         <p>Получите привилегии, которые меняют правила игры. Стиль, скорость и безупречный сервис в каждой детали.</p>
       </div>
 
-      <!-- кнопки с анимациями -->
+      <!-- кнопки -->
       <div class="button-group">
         <button class="btn btn-primary">Купить</button>
         <button class="btn btn-secondary">Написать</button>
         <button class="btn btn-outline">Подробнее</button>
       </div>
 
-      <!-- карточки преимуществ в стеклянном стиле -->
+      <!-- карточки преимуществ -->
       <div class="cards-grid">
         <div class="glass-card">
           <span class="icon">⚡</span>
@@ -440,71 +526,35 @@
 
   <script>
     (function() {
-      // частицы
       const container = document.getElementById('particleContainer');
       if (!container) return;
-      const count = 60;
-      for (let i = 0; i < count; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        const size = 3 + Math.random() * 8;
-        particle.style.width = size + 'px';
-        particle.style.height = size + 'px';
-        // случайное положение
-        const left = Math.random() * 100;
-        const top = Math.random() * 100;
-        particle.style.left = left + '%';
-        particle.style.top = top + '%';
-        // задержка и длительность
-        const duration = 8 + Math.random() * 20;
-        const delay = Math.random() * 12;
-        particle.style.animationDuration = duration + 's';
-        particle.style.animationDelay = delay + 's';
-        // случайный цвет свечения (green/pink/white)
-        const hue = Math.random() > 0.6 ? '255, 20, 147' : (Math.random() > 0.4 ? '0, 255, 0' : '255, 255, 255');
-        particle.style.boxShadow = `0 0 20px 4px rgba(${hue}, 0.4)`;
-        if (hue === '0, 255, 0') {
-          particle.style.background = '#00FF00';
-        } else if (hue === '255, 20, 147') {
-          particle.style.background = '#FF1493';
-        } else {
-          particle.style.background = '#ffffff';
+
+      function createParticles(count, color, shadowColor) {
+        for (let i = 0; i < count; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          const size = 2 + Math.random() * 7;
+          particle.style.width = size + 'px';
+          particle.style.height = size + 'px';
+          particle.style.left = Math.random() * 100 + '%';
+          particle.style.top = Math.random() * 100 + '%';
+          const duration = 8 + Math.random() * 22;
+          const delay = Math.random() * 14;
+          particle.style.animationDuration = duration + 's';
+          particle.style.animationDelay = delay + 's';
+          particle.style.background = color || '#ffffff';
+          particle.style.boxShadow = shadowColor || '0 0 20px 4px rgba(0, 255, 0, 0.3)';
+          container.appendChild(particle);
         }
-        container.appendChild(particle);
       }
 
-      // добавим еще несколько частиц с другим направлением (для разнообразия)
-      for (let i = 0; i < 25; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        const size = 2 + Math.random() * 5;
-        particle.style.width = size + 'px';
-        particle.style.height = size + 'px';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        const duration = 12 + Math.random() * 18;
-        particle.style.animationDuration = duration + 's';
-        particle.style.animationDelay = Math.random() * 15 + 's';
-        particle.style.background = '#FF1493';
-        particle.style.boxShadow = '0 0 30px 6px rgba(255, 20, 147, 0.3)';
-        container.appendChild(particle);
-      }
+      // зелёные частицы
+      createParticles(35, '#00FF00', '0 0 25px 6px rgba(0, 255, 0, 0.25)');
+      // розовые частицы
+      createParticles(30, '#FF1493', '0 0 25px 6px rgba(255, 20, 147, 0.25)');
+      // белые частицы
+      createParticles(20, '#ffffff', '0 0 20px 4px rgba(255, 255, 255, 0.15)');
     })();
   </script>
-
-  <!-- дополнительный эффект: плавное появление блоков уже через css, анимация работает -->
-  <style>
-    /* дополнительная полировка для стеклянных карточек */
-    .glass-card {
-      transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.25s ease, background 0.2s ease;
-    }
-    .glass-card:hover {
-      backdrop-filter: blur(18px);
-    }
-    /* кнопки: анимация нажатия */
-    .btn:active {
-      transform: scale(0.94);
-    }
-  </style>
 </body>
 </html>
