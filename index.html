@@ -497,10 +497,86 @@
   </div>
 
   <script>
+    let isProcessing = false;
+  
+    function handleClick(event, link, originalText) {
+      // Если уже обрабатывается клик - блокируем
+      if (isProcessing) {
+        event.preventDefault();
+        return false;
+      }
+  
+      // Находим кнопку
+      const btn = link.querySelector('.btn');
+      if (!btn) return true;
+  
+      // Блокируем повторные клики
+      isProcessing = true;
+      btn.classList.add('btn-clicked');
+      
+      // Меняем текст кнопки
+      const oldText = btn.textContent;
+      btn.textContent = '⏳ Открытие...';
+      
+      // Разрешаем переход по ссылке
+      setTimeout(() => {
+        // Через 1.5 секунды снимаем блокировку
+        isProcessing = false;
+        btn.classList.remove('btn-clicked');
+        btn.textContent = oldText;
+      }, 1500);
+      
+      // Если это Telegram WebApp - открываем по-особому
+      if (window.Telegram && window.Telegram.WebApp) {
+        event.preventDefault();
+        window.Telegram.WebApp.openTelegramLink(link.href);
+        return false;
+      }
+      
+      return true;
+    }
+  
+    // Восстанавливаем состояние при возврате на страницу
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) {
+        // Страница была загружена из кеша - восстанавливаем всё
+        document.querySelectorAll('.btn').forEach(btn => {
+          btn.classList.remove('btn-clicked');
+          // Восстанавливаем текст
+          if (btn.textContent.includes('⏳')) {
+            if (btn.classList.contains('btn-primary')) {
+              btn.textContent = 'Купить';
+            } else if (btn.classList.contains('btn-secondary')) {
+              btn.textContent = 'Написать';
+            }
+          }
+        });
+        isProcessing = false;
+      }
+    });
+  
+    // Дополнительная защита: если страница была скрыта и показана снова
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
+        // Страница стала видимой - восстанавливаем кнопки
+        document.querySelectorAll('.btn').forEach(btn => {
+          btn.classList.remove('btn-clicked');
+          if (btn.textContent.includes('⏳')) {
+            if (btn.classList.contains('btn-primary')) {
+              btn.textContent = 'Купить';
+            } else if (btn.classList.contains('btn-secondary')) {
+              btn.textContent = 'Написать';
+            }
+          }
+        });
+        isProcessing = false;
+      }
+    });
+  
     (function() {
       const container = document.getElementById('particleContainer');
       if (!container) return;
-
+  
       function createParticles(count, color, shadowColor) {
         for (let i = 0; i < count; i++) {
           const particle = document.createElement('div');
@@ -519,11 +595,11 @@
           container.appendChild(particle);
         }
       }
-
+  
       createParticles(35, '#00FF00', '0 0 25px 6px rgba(0, 255, 0, 0.2)');
       createParticles(30, '#FF1493', '0 0 25px 6px rgba(255, 20, 147, 0.2)');
       createParticles(20, '#ffffff', '0 0 20px 4px rgba(255, 255, 255, 0.1)');
     })();
-  </script>
+</script>
 </body>
 </html>
