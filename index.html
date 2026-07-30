@@ -203,6 +203,14 @@
       margin-bottom: 44px;
     }
 
+    /* ВАЖНО: стили для ссылок-контейнеров кнопок */
+    .button-group a {
+      flex: 1 1 auto;
+      min-width: 120px;
+      display: inline-flex;
+      text-decoration: none;
+    }
+
     .btn {
       padding: 14px 36px;
       border: none;
@@ -220,10 +228,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
       min-width: 120px;
       flex: 1 1 auto;
       position: relative;
       overflow: hidden;
+      text-decoration: none;
+      text-align: center;
     }
 
     .btn-primary {
@@ -355,13 +366,17 @@
         font-size: 0.9rem;
       }
 
+      .button-group a {
+        flex: 1 1 100%;
+        min-width: 100%;
+      }
+
       /* 3 карточки: 2 сверху, 1 снизу по центру */
       .cards-grid {
         grid-template-columns: 1fr 1fr;
         gap: 14px;
       }
 
-      /* третья карточка занимает две колонки и центрируется */
       .glass-card:nth-child(3) {
         grid-column: 1 / -1;
         max-width: 280px;
@@ -450,12 +465,12 @@
         <p>Сочные фуллы со всех дорогих приваток собраны в нашей випке, пополнение ежедневное.</p>
       </div>
 
-      <!-- кнопки -->
+      <!-- кнопки со ссылками (исправлено) -->
       <div class="button-group">
-        <a href="https://t.me/dailydose_vip_bot" target="_blank" style="text-decoration: none; flex: 1 1 auto;">
+        <a href="https://t.me/dailydose_vip_bot" target="_blank">
           <button class="btn btn-primary">Купить</button>
         </a>
-        <a href="https://t.me/Legendagggk" target="_blank" style="text-decoration: none; flex: 1 1 auto;">
+        <a href="https://t.me/Legendagggk" target="_blank">
           <button class="btn btn-secondary">Написать</button>
         </a>
       </div>
