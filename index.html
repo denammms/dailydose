@@ -24,7 +24,6 @@
       padding: 16px;
     }
 
-    /* главный контейнер */
     .glass-wrapper {
       max-width: 1200px;
       width: 100%;
@@ -40,7 +39,6 @@
       overflow: hidden;
     }
 
-    /* фон с размытыми кругами */
     .bg-canvas {
       position: fixed;
       top: 0;
@@ -106,7 +104,6 @@
       100% { transform: translate(20px, -20px) scale(1.05); }
     }
 
-    /* частицы */
     .particle-container {
       position: fixed;
       top: 0;
@@ -132,14 +129,12 @@
       100% { transform: translateY(-260px) scale(0.4); opacity: 0.05; }
     }
 
-    /* контент */
     .content {
       position: relative;
       z-index: 20;
       color: #ffffff;
     }
 
-    /* логотип */
     .logo-area {
       margin-bottom: 32px;
       display: flex;
@@ -159,7 +154,6 @@
       text-shadow: 0 0 40px rgba(0, 255, 0, 0.1);
     }
 
-    /* описание VIP — плотный фон для читаемости */
     .vip-description {
       margin-bottom: 32px;
       background: rgba(0, 0, 0, 0.5);
@@ -195,7 +189,6 @@
       font-weight: 400;
     }
 
-    /* кнопки */
     .button-group {
       display: flex;
       flex-wrap: wrap;
@@ -203,14 +196,7 @@
       margin-bottom: 44px;
     }
 
-    /* ВАЖНО: стили для ссылок-контейнеров кнопок */
-    .button-group a {
-      flex: 1 1 auto;
-      min-width: 120px;
-      display: inline-flex;
-      text-decoration: none;
-    }
-
+    /* ===== КНОПКИ КАК ССЫЛКИ С АНИМАЦИЯМИ ===== */
     .btn {
       padding: 14px 36px;
       border: none;
@@ -228,13 +214,12 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
       min-width: 120px;
       flex: 1 1 auto;
-      position: relative;
-      overflow: hidden;
       text-decoration: none;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
     .btn-primary {
@@ -329,7 +314,6 @@
       text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
     }
 
-    /* адаптив для телефонов */
     @media (max-width: 640px) {
       .glass-wrapper {
         padding: 20px 16px 28px;
@@ -366,12 +350,6 @@
         font-size: 0.9rem;
       }
 
-      .button-group a {
-        flex: 1 1 100%;
-        min-width: 100%;
-      }
-
-      /* 3 карточки: 2 сверху, 1 снизу по центру */
       .cards-grid {
         grid-template-columns: 1fr 1fr;
         gap: 14px;
@@ -440,7 +418,6 @@
   </style>
 </head>
 <body>
-  <!-- фон: размытые круги -->
   <div class="bg-canvas">
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
@@ -448,34 +425,25 @@
     <div class="circle circle-4"></div>
   </div>
 
-  <!-- частицы -->
   <div class="particle-container" id="particleContainer"></div>
 
-  <!-- основной контент -->
   <div class="glass-wrapper">
     <div class="content">
-      <!-- логотип -->
       <div class="logo-area">
         <span class="logo-text">✦ Daily dose VIP</span>
       </div>
 
-      <!-- описание VIP -->
       <div class="vip-description">
         <h2>Эксклюзивный <span class="highlight">доступ</span></h2>
         <p>Сочные фуллы со всех дорогих приваток собраны в нашей випке, пополнение ежедневное.</p>
       </div>
 
-      <!-- кнопки со ссылками (исправлено) -->
+      <!-- КНОПКИ КАК ССЫЛКИ С СОХРАНЕНИЕМ АНИМАЦИЙ -->
       <div class="button-group">
-        <a href="https://t.me/dailydose_vip_bot" target="_blank">
-          <button class="btn btn-primary">Купить</button>
-        </a>
-        <a href="https://t.me/Legendagggk" target="_blank">
-          <button class="btn btn-secondary">Написать</button>
-        </a>
+        <a href="https://t.me/your_channel" target="_blank" class="btn btn-primary">Купить</a>
+        <a href="https://t.me/your_support" target="_blank" class="btn btn-secondary">Написать</a>
       </div>
 
-      <!-- карточки преимуществ -->
       <div class="cards-grid">
         <div class="glass-card">
           <span class="icon">⚡</span>
@@ -497,86 +465,10 @@
   </div>
 
   <script>
-    let isProcessing = false;
-  
-    function handleClick(event, link, originalText) {
-      // Если уже обрабатывается клик - блокируем
-      if (isProcessing) {
-        event.preventDefault();
-        return false;
-      }
-  
-      // Находим кнопку
-      const btn = link.querySelector('.btn');
-      if (!btn) return true;
-  
-      // Блокируем повторные клики
-      isProcessing = true;
-      btn.classList.add('btn-clicked');
-      
-      // Меняем текст кнопки
-      const oldText = btn.textContent;
-      btn.textContent = '⏳ Открытие...';
-      
-      // Разрешаем переход по ссылке
-      setTimeout(() => {
-        // Через 1.5 секунды снимаем блокировку
-        isProcessing = false;
-        btn.classList.remove('btn-clicked');
-        btn.textContent = oldText;
-      }, 1500);
-      
-      // Если это Telegram WebApp - открываем по-особому
-      if (window.Telegram && window.Telegram.WebApp) {
-        event.preventDefault();
-        window.Telegram.WebApp.openTelegramLink(link.href);
-        return false;
-      }
-      
-      return true;
-    }
-  
-    // Восстанавливаем состояние при возврате на страницу
-    window.addEventListener('pageshow', function(event) {
-      if (event.persisted) {
-        // Страница была загружена из кеша - восстанавливаем всё
-        document.querySelectorAll('.btn').forEach(btn => {
-          btn.classList.remove('btn-clicked');
-          // Восстанавливаем текст
-          if (btn.textContent.includes('⏳')) {
-            if (btn.classList.contains('btn-primary')) {
-              btn.textContent = 'Купить';
-            } else if (btn.classList.contains('btn-secondary')) {
-              btn.textContent = 'Написать';
-            }
-          }
-        });
-        isProcessing = false;
-      }
-    });
-  
-    // Дополнительная защита: если страница была скрыта и показана снова
-    document.addEventListener('visibilitychange', function() {
-      if (!document.hidden) {
-        // Страница стала видимой - восстанавливаем кнопки
-        document.querySelectorAll('.btn').forEach(btn => {
-          btn.classList.remove('btn-clicked');
-          if (btn.textContent.includes('⏳')) {
-            if (btn.classList.contains('btn-primary')) {
-              btn.textContent = 'Купить';
-            } else if (btn.classList.contains('btn-secondary')) {
-              btn.textContent = 'Написать';
-            }
-          }
-        });
-        isProcessing = false;
-      }
-    });
-  
     (function() {
       const container = document.getElementById('particleContainer');
       if (!container) return;
-  
+
       function createParticles(count, color, shadowColor) {
         for (let i = 0; i < count; i++) {
           const particle = document.createElement('div');
@@ -595,11 +487,11 @@
           container.appendChild(particle);
         }
       }
-  
+
       createParticles(35, '#00FF00', '0 0 25px 6px rgba(0, 255, 0, 0.2)');
       createParticles(30, '#FF1493', '0 0 25px 6px rgba(255, 20, 147, 0.2)');
       createParticles(20, '#ffffff', '0 0 20px 4px rgba(255, 255, 255, 0.1)');
     })();
-</script>
+  </script>
 </body>
 </html>
